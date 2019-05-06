@@ -32,6 +32,10 @@ public class LivroBean {
 	public Livro getLivro() {
 		return livro;
 	}
+	
+	public void setLivro(Livro livro) {
+		this.livro = livro;
+	}
 
 	public List<Livro> getLivros() {
 		return new DAO<Livro>(Livro.class).listaTodos();
@@ -44,14 +48,24 @@ public class LivroBean {
 					new FacesMessage("Um livro deve ter pelo menos um Autor"));
 			return;
 		}
-		new DAO<Livro>(Livro.class).adiciona(this.livro);
+		
+		if (this.livro.getId() == null) {
+	        new DAO<Livro>(Livro.class).adiciona(this.livro);        
+	    } else {
+	        new DAO<Livro>(Livro.class).atualiza(this.livro);
+	    }
 		
 		this.livro = new Livro();
+		
 	}
 
 	public void gravarAutor() {
 		Autor autor = new DAO<Autor>(Autor.class).buscaPorId(this.autorId);
 		this.livro.adicionaAutor(autor);
+	}
+	
+	public void removerAutorDoLivro(Autor autor) {
+	    this.livro.removeAutor(autor);
 	}
 
 	public List<Autor> getAutores() {
@@ -68,5 +82,9 @@ public class LivroBean {
 			throw new ValidatorException(new FacesMessage("ISBN: Deve começar com 1"));
 		}
 	}
-
+	
+	public void remover(Livro livro) {
+	    new DAO<Livro>(Livro.class).remove(livro);
+	}
+	
 }
