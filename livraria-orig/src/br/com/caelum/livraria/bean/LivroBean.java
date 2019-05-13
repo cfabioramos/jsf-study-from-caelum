@@ -87,4 +87,8 @@ public class LivroBean {
 	    new DAO<Livro>(Livro.class).remove(livro);
 	}
 	
+	public void carregaPelaId() {
+        this.livro = new DAO<Livro>(Livro.class).buscaPorId(this.livro.getId());
+    }
+	
 }
